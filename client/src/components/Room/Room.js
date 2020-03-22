@@ -3,7 +3,7 @@ import { Container, Navbar, Columns, Button} from "react-bulma-components";
 import VideoPlayer from "../VideoPlayer";
 
 export default function Room({
-  
+  socket
 }) {
 
   return (
@@ -32,7 +32,7 @@ export default function Room({
       <Container>
         <Columns>
           <Columns.Column size={9}>
-            <VideoPlayer url={"http://www.youtube.com/watch?v=ysz5S6PUM-U"} />
+            <VideoPlayer socket={socket} url={"http://www.youtube.com/watch?v=ysz5S6PUM-U"} />
           </Columns.Column>
           <Columns.Column size={3}>
             <Button  color="primary">

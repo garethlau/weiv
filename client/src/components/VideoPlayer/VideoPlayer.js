@@ -12,14 +12,17 @@ export default function VideoPlayer({
 	onSeek,
 	onEnded,
 	onError,
-	url
+  url,
+  player,
+  playing,
 }) {
 	return (
 		<div className={css.playerWrapper}>
 			<YouTubePlayer
+      ref={player}
 				className={css.reactPlayer}
 				url={url}
-				playing
+				playing={playing}
 				onProgress={onProgress}
 				onReady={onReady}
 				onStart={onStart}

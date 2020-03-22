@@ -16,9 +16,11 @@ export default function RoomContainer() {
 		socket.emit("FROM_CLIENT", {
 			type: "ESTABLISH_CONNECTION",
 			payload: "CODE"
-		});
+        });
+        
+
 	}, []);
     
     // Return UI component
-	return <Room />;
+	return <Room socket={socket}/>;
 }
