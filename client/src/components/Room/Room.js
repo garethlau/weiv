@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Container, Navbar, Columns, Button} from "react-bulma-components";
+import { Container, Navbar, Columns, Button, Panel} from "react-bulma-components";
 import VideoPlayer from "../VideoPlayer";
 
 export default function Room({
@@ -35,9 +35,31 @@ export default function Room({
             <VideoPlayer socket={socket} url={"http://www.youtube.com/watch?v=ysz5S6PUM-U"} />
           </Columns.Column>
           <Columns.Column size={3}>
-            <Button  color="primary">
-              Ping
-            </Button>
+            <p class="panel-heading">
+              Video Queue
+            </p>
+            <div class="panel-block">
+              <p class="control has-icons-left">
+              </p>
+            </div>
+            <a class="panel-block is-active">
+              <span class="panel-icon">
+                <i class="fas fa-music"></i>
+              </span>
+              VideoOne
+            </a>
+            <a class="panel-block is-active">
+              <span class="panel-icon">
+                <i class="fas fa-music"></i>
+              </span>
+              VideoTwo
+            </a>
+            <a class="panel-block is-active">
+              <span class="panel-icon">
+                <i class="fas fa-music"></i>
+              </span>
+              VideoThree
+            </a>
 
           </Columns.Column>
         </Columns>
