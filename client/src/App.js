@@ -4,10 +4,7 @@ import "react-bulma-components/dist/react-bulma-components.min.css";
 
 // Import components
 import Room from "./components/Room";
-
-function Home() {
-  return <div>Welcome to Weiv</div>
-}
+import Home from './components/Home';
 
 function App() {
   return (
