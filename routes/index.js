@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.send("Hellow world");
-})
+router.use("/api/get-code", require('./api'))
 
 module.exports = router;
