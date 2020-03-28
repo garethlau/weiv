@@ -3,7 +3,6 @@ import Home from './Home';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 
-
 export default function HomeContainer() {
     const history = useHistory();
     const [code, setCode] = useState("");
