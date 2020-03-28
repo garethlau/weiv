@@ -11,6 +11,7 @@ export default function VideoPlayerContainer({ url, socket }) {
 	const [playing, setPlaying] = useState(true);
 
 	useEffect(() => {
+		// Check if the vide player object is still rendered
 		socket.on("FROM_SERVER", action => {
 			switch (action.type) {
 				case "PLAY":
@@ -29,6 +30,15 @@ export default function VideoPlayerContainer({ url, socket }) {
 		});
 	}, []);
 
+	useEffect(
+		// Cleanup and disconnect from the room when this component unmounts
+		() => () => {
+			console.log("VideoPlayerContainer is being destroyed");
+			socket.disconnect();
+		},
+		[]
+	);
+
 	function onReady(event) {
 		// access to player in all event handlers via event.target
 		console.log(event);
@@ -45,8 +55,8 @@ export default function VideoPlayerContainer({ url, socket }) {
 
 	function onPause(event) {
 		console.log("Pause");
-			let currentTime = player.current.getCurrentTime();
-			socket.emit("FROM_CLIENT", { type: "PAUSE", payload: currentTime });
+		let currentTime = player.current.getCurrentTime();
+		socket.emit("FROM_CLIENT", { type: "PAUSE", payload: currentTime });
 	}
 
 	function onEnded(event) {
