@@ -1,5 +1,8 @@
-import React, { useEffect } from "react";
-import { Container, Navbar, Columns, Button } from "react-bulma-components";
+import React from "react";
+import { Container, Columns, Button } from "react-bulma-components";
+
+import css from './Room.module.scss';
+
 import VideoPlayer from "../VideoPlayer";
 import Nav from "../Nav";
 
@@ -7,7 +10,7 @@ export default function Room({ socket, videoUrl }) {
 	return (
 		<div>
 			<Nav />
-			<Container>
+      <Container className={css.container}>
 				<Columns>
 					<Columns.Column size={9}>
 						<VideoPlayer socket={socket} url={videoUrl} />
