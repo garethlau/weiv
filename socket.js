@@ -2,7 +2,6 @@ module.exports = (app, io) => {
     // Listen for new socket connections
     io.sockets.on("connection", socket => {
         let roomId = "";
-        let lastAction = "";
         console.log(`New connection: ${socket.id}`)
 
         // Listen for events emitted from clients
@@ -16,18 +15,12 @@ module.exports = (app, io) => {
                     })
                     break;
                 case "PLAY":    
-                    console.log("PLAY");
-                    if (lastAction !== "PLAY") {
-                        socket.broadcast.to(roomId).emit("FROM_SERVER", {type: "PLAY", payload: action.payload})
-                    }
-                    lastAction = "PLAY";
+                    console.log(`[${socket.id}] PLAY`);
+                    socket.broadcast.to(roomId).emit("FROM_SERVER", {type: "PLAY", payload: action.payload})
                     break;
                 case "PAUSE":
-                    console.log("PAUSE");
-                    if (lastAction !== "PAUSE") {
-                        socket.broadcast.to(roomId).emit("FROM_SERVER", {type: "PAUSE", payload: action.payload})
-                    }
-                    lastAction = "PAUSE";
+                    console.log(`[${socket.id}] PAUSE`);
+                    socket.broadcast.to(roomId).emit("FROM_SERVER", {type: "PAUSE", payload: action.payload})
                     break;
                 default:
                     console.log("Case not handled");

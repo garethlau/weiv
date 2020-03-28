@@ -8,19 +8,21 @@ export default function VideoPlayerContainer({ url, socket }) {
 	}, [url]);
 
 	const player = useRef(null);
-  const [playing, setPlaying] = useState(true);
+	const [playing, setPlaying] = useState(true);
 
 	useEffect(() => {
 		socket.on("FROM_SERVER", action => {
 			switch (action.type) {
 				case "PLAY":
-          
-          player.current.seekTo(action.payload, "seconds");
-          break;
+					console.log("Received play message");
+					player.current.seekTo(action.payload, "seconds");
+					setPlaying(true);
+					break;
 				case "PAUSE":
-          console.log(`Pause at ${action.payload}`);
-          player.current.seekTo(action.payload, "seconds");
-          break;
+					console.log("Received pause message");
+					player.current.seekTo(action.payload, "seconds");
+					setPlaying(false);
+					break;
 				default:
 					console.log("Not handled");
 			}
@@ -34,15 +36,17 @@ export default function VideoPlayerContainer({ url, socket }) {
 
 	function onPlay(event) {
 		console.log("Play");
-    let currentTime = player.current.getCurrentTime();
-		socket.emit("FROM_CLIENT", { type: "PLAY", payload: currentTime });
+
+		if (!playing) {
+			let currentTime = player.current.getCurrentTime();
+			socket.emit("FROM_CLIENT", { type: "PLAY", payload: currentTime });
+		}
 	}
 
 	function onPause(event) {
-		console.log("Pauuse");
-		let currentTime = player.current.getCurrentTime();
-		console.log(currentTime);
-		socket.emit("FROM_CLIENT", { type: "PAUSE", payload: currentTime });
+		console.log("Pause");
+			let currentTime = player.current.getCurrentTime();
+			socket.emit("FROM_CLIENT", { type: "PAUSE", payload: currentTime });
 	}
 
 	function onEnded(event) {
@@ -79,8 +83,8 @@ export default function VideoPlayerContainer({ url, socket }) {
 			onDuration={onDuration}
 			onPlaybackRateChange={() => console.log("rate changed")}
 			onPlaybackQualityChange={() => console.log("quality changed")}
-      player={player}
-      playing={playing}
+			player={player}
+			playing={playing}
 		/>
 	);
 }
