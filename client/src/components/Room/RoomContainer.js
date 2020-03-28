@@ -12,6 +12,7 @@ const socket = io(connection);
 
 export default function RoomContainer() {
 	const [code, setCode] = useState("");
+	const [videoUrl, setVideoUrl] = useState("http://www.youtube.com/watch?v=ysz5S6PUM-U");
 
 	// Get the code from the url
 	useEffect(() => {
@@ -31,5 +32,5 @@ export default function RoomContainer() {
 	}, [code]);
 
 	// Return UI component
-	return <Room socket={socket} />;
+	return <Room videoUrl={videoUrl} socket={socket} />;
 }
