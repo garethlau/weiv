@@ -1,36 +1,93 @@
 module.exports = (app, io) => {
+  let queues = {};
   // Listen for new socket connections
   io.sockets.on("connection", socket => {
     let roomId = "";
     socket.username = "Anonymous";
-
+    let lastAction = "";
     console.log(`New connection: ${socket.id}`);
+
+    const MEDIA_ACTIONS = {
+      QUEUE_UPDATED: "QUEUE_UPDATED",
+      PLAY: "PLAY",
+      PAUSE: "PAUSE",
+      END: "END",
+      ADD_TO_QUEUE: "ADD_TO_QUEUE",
+      NEXT_VIDEO: "NEXT_VIDEO"
+    };
 
     // Listen for events emitted from clients
     socket.on("FROM_CLIENT", action => {
       // Check the action type
       switch (action.type) {
         case "ESTABLISH_CONNECTION":
+          // Join the room
           socket.join(action.payload, () => {
             console.log(`Joined room: ${action.payload}`);
             roomId = action.payload;
           });
+          // Create queue for the room
+          if (!queues[roomId]) {
+            queues[roomId] = [];
+          }
+          // Send the current queue to everyone
+          io.in(roomId).emit("FROM_SERVER", {
+            type: MEDIA_ACTIONS.QUEUE_UPDATED,
+            payload: queues[roomId]
+          });
           break;
-        case "PLAY":
+        case MEDIA_ACTIONS.PLAY:
           console.log(`[${socket.id}] PLAY`);
           socket.broadcast
             .to(roomId)
-            .emit("FROM_SERVER", { type: "PLAY", payload: action.payload });
+            .emit("FROM_SERVER", {
+              type: MEDIA_ACTIONS.PLAY,
+              payload: action.payload
+            });
           break;
-        case "PAUSE":
+        case MEDIA_ACTIONS.PAUSE:
           console.log(`[${socket.id}] PAUSE`);
           socket.broadcast
             .to(roomId)
-            .emit("FROM_SERVER", { type: "PAUSE", payload: action.payload });
+            .emit("FROM_SERVER", {
+              type: MEDIA_ACTIONS.PAUSE,
+              payload: action.payload
+            });
           break;
+        case MEDIA_ACTIONS.END:
+          // Send the next video URL
+          if (lastAction !== "END") {
+            console.log(`[${socket.id}] END`);
+            io.in(roomId).emit("FROM_SERVER", {
+              type: MEDIA_ACTIONS.NEXT_VIDEO,
+              payload: queues[roomId] ? queues[roomId].shift() : null
+            });
+          }
+
+          // Send the updated queue
+          io.in(roomId).emit("FROM_SERVER", {
+            type: MEDIA_ACTIONS.QUEUE_UPDATED,
+            payload: queues[roomId]
+          });
+          break;
+        case MEDIA_ACTIONS.ADD_TO_QUEUE:
+          console.log(`[${socket.id}] ADD TO QUEUE ` + action.payload);
+          if (!queues[roomId]) {
+            queues[roomId] = [];
+          }
+          queues[roomId].push(action.payload);
+          console.log(queues);
+          io.in(roomId).emit("FROM_SERVER", {
+            type: MEDIA_ACTIONS.QUEUE_UPDATED,
+            payload: queues[roomId]
+          });
+          break;
+
         default:
-          console.log("Case not handled");
+          console.log(`${action.type} is not supported`);
       }
+
+      lastAction = action.type;
     });
 
     // Listen for chat events emitted from clients
@@ -61,7 +118,7 @@ module.exports = (app, io) => {
           break;
         case CHAT_ACTIONS.TYPING:
           console.log(typing);
-          socket.boradcast
+          socket.broadcast
             .to(roomId)
             .emit(CHAT_ACTION_FROM_SERVER, { type: CHAT_ACTIONS.TYPING });
           break;

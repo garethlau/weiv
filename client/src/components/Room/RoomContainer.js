@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
+import useFormInput from "../../hooks/useFormInput";
 
 // Import UI Component
 import Room from "./Room";
@@ -12,7 +13,6 @@ const socket = io(connection);
 
 export default function RoomContainer() {
 	const [code, setCode] = useState("");
-	const [videoUrl, setVideoUrl] = useState("http://www.youtube.com/watch?v=ysz5S6PUM-U");
 
 	// Get the code from the url
 	useEffect(() => {
@@ -29,8 +29,16 @@ export default function RoomContainer() {
 				payload: code
 			});
 		}
-	}, [code]);
+	}, [code, window.location.href]);
 
+	useEffect(
+		// Cleanup and disconnect from the room when this component unmounts
+		() => () => {
+			console.log("Room Container being Destroyed")
+			socket.disconnect();
+		},
+		[]
+	);
 	// Return UI component
-	return <Room videoUrl={videoUrl} socket={socket} />;
+	return <Room socket={socket} />;
 }

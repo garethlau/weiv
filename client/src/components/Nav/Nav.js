@@ -5,7 +5,7 @@ export default function Nav({ active, toggleMobileMenu, goto }) {
 	return (
 		<Navbar color="primary" active={active} fixed="top">
 			<Navbar.Brand>
-				<Navbar.Item onClick={() => goto("/")}>
+				<Navbar.Item renderAs="a" href="/">
 					<strong>Weiv</strong>
 				</Navbar.Item>
 				<Navbar.Burger onClick={toggleMobileMenu} />
