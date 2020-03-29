@@ -1,4 +1,4 @@
-This project is apart of my Weekly Project Challenge. Big thanks to [slin349]("https://github.com/slin349") for working on this project with me.
+This project is apart of my Weekly Project Challenge. Big thanks to [slin349](https://github.com/slin349) for working on this project with me.
 
 # Weekly Project Challenge
 I've challenged myself to build something every week. My motivation for doing this challenge is to a) explore crazy ideas that I might otherwise put off b) explore different technologies that I don't normally use c) better understand my learning pace and d) give myself something to do while I'm at home all day.
