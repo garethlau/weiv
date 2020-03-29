@@ -1,0 +1,26 @@
+.container {
+    display: grid;
+    grid-template-rows: auto 40px;
+    padding: 0px 10px;
+}
+
+.logsContainer {
+    height: calc(25vw * 1.55 - 40px);
+    border-radius: 2px;
+    border-color: lightgray;
+    border-width: 2px;
+    border-style:solid;
+}
+.messageContainer {
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: lightgray;
+}
+.messageUsername {
+    margin-bottom: 0 !important;
+    font-weight: 100;
+    font-size:0.75em;
+}
+.messageContent {
+    margin-bottom: 0;
+}
