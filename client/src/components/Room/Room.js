@@ -1,9 +1,12 @@
 import React from "react";
-import { Container, Columns, Button } from "react-bulma-components";
+import {
+	Button,
+	Panel
+} from "react-bulma-components";
+import VideoPlayer from "../VideoPlayer";
 
 import css from "./Room.module.scss";
 
-import VideoPlayer from "../VideoPlayer";
 import Nav from "../Nav";
 import Chat from "../Chat";
 
@@ -18,7 +21,30 @@ export default function Room({ socket, videoUrl }) {
 				<div className={css.chat}>
 					<Chat socket={socket} />
 				</div>
-				<div className={css.queue}></div>
+				<div className={css.queue}>
+					<p class="panel-heading">Video Queue</p>
+					<div class="panel-block">
+						<p class="control has-icons-left"></p>
+					</div>
+					<a class="panel-block is-active">
+						<span class="panel-icon">
+							<i class="fas fa-music"></i>
+						</span>
+						VideoOne
+					</a>
+					<a class="panel-block is-active">
+						<span class="panel-icon">
+							<i class="fas fa-music"></i>
+						</span>
+						VideoTwo
+					</a>
+					<a class="panel-block is-active">
+						<span class="panel-icon">
+							<i class="fas fa-music"></i>
+						</span>
+						VideoThree
+					</a>
+				</div>
 			</div>
 		</div>
 	);
