@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import VideoPlayer from "./VideoPlayer";
-import useWindowWidth from "../../hooks/useWindowWidth";
 
-export default function VideoPlayerContainer({ url, socket }) {
-	useEffect(() => {
-		console.log(url);
-	}, [url]);
+export default function VideoPlayerContainer({  socket }) {
 
 	const player = useRef(null);
 	const [playing, setPlaying] = useState(true);
+	const defaultUrl ="http://www.youtube.com/watch?v=ysz5S6PUM-U" 
+	const [url, setUrl] = useState(defaultUrl);
 
 	useEffect(() => {
 		// Check if the vide player object is still rendered
@@ -24,20 +22,20 @@ export default function VideoPlayerContainer({ url, socket }) {
 					player.current.seekTo(action.payload, "seconds");
 					setPlaying(false);
 					break;
+				case "NEXT_VIDEO":
+					if (action.payload === undefined || action.payload === null) {
+						setUrl(defaultUrl);
+					}
+					else {
+						setUrl(action.payload);
+					}
+					setPlaying(true);
+				break;
 				default:
 					console.log("Not handled");
 			}
 		});
 	}, []);
-
-	useEffect(
-		// Cleanup and disconnect from the room when this component unmounts
-		() => () => {
-			console.log("VideoPlayerContainer is being destroyed");
-			socket.disconnect();
-		},
-		[]
-	);
 
 	function onReady(event) {
 		// access to player in all event handlers via event.target
@@ -61,6 +59,7 @@ export default function VideoPlayerContainer({ url, socket }) {
 
 	function onEnded(event) {
 		console.log("End");
+		socket.emit("FROM_CLIENT", {type: "END"});
 	}
 
 	function onError(event) {
