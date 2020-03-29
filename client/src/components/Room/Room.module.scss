@@ -1,4 +1,26 @@
+@import '../../styles/breakpoints.scss';
 .container {
-    margin-top: 30px;
-    padding: 0px 20px;
+	margin-top: 30px;
+	padding: 0px 20px;
+	display: grid;
+    grid-template-columns: 12fr 4fr;
+    grid-template-rows: auto auto;
+    grid-template-areas: "video-player" "chat";
+    @include md {
+            grid-template-areas: "video-player chat"
+            "queue queue";
+    } 
 }
+
+.videoPlayer {
+    grid-area: video-player;
+}
+
+.chat {
+    grid-area: chat;
+}
+
+.queue {
+    grid-area: queue;
+}
+    
